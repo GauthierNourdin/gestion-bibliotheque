@@ -1,6 +1,7 @@
 package org.eclipse.model;
 
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.Date;
 
 public class Mediatheque {
@@ -73,7 +74,7 @@ public class Mediatheque {
 	}
 	
 	public int getLimiteLivresReserves() {
-		return limiteLivresReserves;
+		return this.limiteLivresReserves;
 	}
 
 	public void setLimiteLivresReserves(int limiteLivresReserves) {
@@ -81,7 +82,7 @@ public class Mediatheque {
 	}
 
 	public int getLimiteDVDsReserves() {
-		return limiteDVDsReserves;
+		return this.limiteDVDsReserves;
 	}
 
 	public void setLimiteDVDsReserves(int limiteDVDsReserves) {
@@ -89,7 +90,7 @@ public class Mediatheque {
 	}
 
 	public int getNombreJoursReservation() {
-		return nombreJoursReservation;
+		return this.nombreJoursReservation;
 	}
 
 	public void setNombreJoursReservation(int nombreJoursReservation) {
@@ -97,68 +98,68 @@ public class Mediatheque {
 	}
 
 	public boolean ajouterLivre(Livre argLivre) {
-		if (!listeDOeuvres.contains(argLivre)) {
-			return listeDOeuvres.add(argLivre);
+		if (!this.listeDOeuvres.contains(argLivre)) {
+			return this.listeDOeuvres.add(argLivre);
 		}
 		return false;
 	}
 	
 	public boolean supprimerLivre(Livre argLivre) {
-		if (listeDOeuvres.contains(argLivre)) {
+		if (this.listeDOeuvres.contains(argLivre)) {
 			if (argLivre.getAdherant() != null) {
 				if(argLivre.getAdherant().getOeuvresEmpruntes().contains(argLivre)) {
 					argLivre.getAdherant().getOeuvresEmpruntes().remove(argLivre);
 				}
 			}
-			return listeDOeuvres.remove(argLivre);
+			return this.listeDOeuvres.remove(argLivre);
 		}
 		return false;
 	}
 
 	public boolean ajouterDVD(DVD argDVD) {
-		if (!listeDOeuvres.contains(argDVD)) {
-			return listeDOeuvres.add(argDVD);
+		if (!this.listeDOeuvres.contains(argDVD)) {
+			return this.listeDOeuvres.add(argDVD);
 		}
 		return false;
 	}
 	
 	public boolean supprimerDVD(DVD argDVD) {
-		if (listeDOeuvres.contains(argDVD)) {
+		if (this.listeDOeuvres.contains(argDVD)) {
 			if (argDVD.getAdherant() != null) {
 				if(argDVD.getAdherant().getOeuvresEmpruntes().contains(argDVD)) {
 					argDVD.getAdherant().getOeuvresEmpruntes().remove(argDVD);
 				}
 			}
-			return listeDOeuvres.remove(argDVD);
+			return this.listeDOeuvres.remove(argDVD);
 		}
 		return false;
 	}
 	
 	public boolean ajouterAdherant(Adherant argAdherant) {
-		if (!listeDAdherants.contains(argAdherant)) {
-			return listeDAdherants.add(argAdherant);
+		if (!this.listeDAdherants.contains(argAdherant)) {
+			return this.listeDAdherants.add(argAdherant);
 		}
 		return false;
 	}
 
 	public boolean supprimerAdherant(Adherant argAdherant) {
-		if(listeDAdherants.contains(argAdherant)) {
+		if(this.listeDAdherants.contains(argAdherant)) {
 			for (Oeuvre oeuvre : argAdherant.getOeuvresEmpruntes()) {
-			    if (listeDOeuvres.contains(oeuvre)) {
+			    if (this.listeDOeuvres.contains(oeuvre)) {
 			    	oeuvre.setReserve(false);
 			    	oeuvre.setAdherant(null);
 			    	oeuvre.setDateDEmprunt(null);
 			    	oeuvre.setDateDeRetour(null);
 			    }
 			}
-			return listeDAdherants.remove(argAdherant);
+			return this.listeDAdherants.remove(argAdherant);
 		}
 		return false;
 	}
 
 	public ArrayList<Livre> listeLivres() {
 		ArrayList<Livre> livres = new ArrayList<Livre>();
-		for (Oeuvre oeuvre : listeDOeuvres) {
+		for (Oeuvre oeuvre : this.listeDOeuvres) {
 			if (oeuvre instanceof Livre) {
 				Livre livre = (Livre)oeuvre;
 				livres.add(livre);
@@ -169,7 +170,7 @@ public class Mediatheque {
 	
 	public ArrayList<DVD> listeDVDs() {
 		ArrayList<DVD> dVDs = new ArrayList<DVD>();
-		for (Oeuvre oeuvre : listeDOeuvres) {
+		for (Oeuvre oeuvre : this.listeDOeuvres) {
 			if (oeuvre instanceof DVD) {
 				DVD dVD = (DVD)oeuvre;
 				dVDs.add(dVD);
@@ -179,12 +180,12 @@ public class Mediatheque {
 	}
 
 	public boolean reserverLivre(Adherant argAdherant, Livre argLivre) {
-		if (listeDAdherants.contains(argAdherant) && listeDOeuvres.contains(argLivre)) {
-			if (!argLivre.getReserve() && argAdherant.nombreLivresReserves() <= limiteLivresReserves) {
+		if (this.listeDAdherants.contains(argAdherant) && this.listeDOeuvres.contains(argLivre)) {
+			if (!argLivre.getReserve() && argAdherant.nombreLivresReserves() <= this.limiteLivresReserves) {
 				argLivre.setReserve(true);
 				argLivre.setAdherant(argAdherant);
 				argLivre.setDateDEmprunt(new Date(System.currentTimeMillis()));
-				argLivre.setDateDeRetour(new Date(System.currentTimeMillis() + 86400000 * nombreJoursReservation));
+				argLivre.setDateDeRetour(new Date(System.currentTimeMillis() + 86400000 * this.nombreJoursReservation));
 				return argAdherant.reserverLivre(argLivre);
 			}
 		}
@@ -192,7 +193,7 @@ public class Mediatheque {
 	}
 	
 	public boolean restituerLivre(Adherant argAdherant, Livre argLivre) {
-		if (listeDAdherants.contains(argAdherant) && listeDOeuvres.contains(argLivre)) {
+		if (this.listeDAdherants.contains(argAdherant) && this.listeDOeuvres.contains(argLivre)) {
 			if (argAdherant.getOeuvresEmpruntes().contains(argLivre)) {
 				argLivre.setReserve(false);
 				argLivre.setAdherant(null);
@@ -204,12 +205,12 @@ public class Mediatheque {
 	}
 	
 	public boolean reserverDVD(Adherant argAdherant, DVD argDVD) {
-		if (listeDAdherants.contains(argAdherant) && listeDOeuvres.contains(argDVD)) {
-			if (!argDVD.getReserve() && argAdherant.nombreDVDsReserves() <= limiteDVDsReserves) {
+		if (this.listeDAdherants.contains(argAdherant) && this.listeDOeuvres.contains(argDVD)) {
+			if (!argDVD.getReserve() && argAdherant.nombreDVDsReserves() <= this.limiteDVDsReserves) {
 				argDVD.setReserve(true);
 				argDVD.setAdherant(argAdherant);
 				argDVD.setDateDEmprunt(new Date(System.currentTimeMillis()));
-				argDVD.setDateDeRetour(new Date(System.currentTimeMillis() + 86400000 * nombreJoursReservation));
+				argDVD.setDateDeRetour(new Date(System.currentTimeMillis() + 86400000 * this.nombreJoursReservation));
 				return argAdherant.reserverDVD(argDVD);
 			}
 		}
@@ -217,7 +218,7 @@ public class Mediatheque {
 	}
 	
 	public boolean restituerDVD(Adherant argAdherant, DVD argDVD) {
-		if (listeDAdherants.contains(argAdherant) && listeDOeuvres.contains(argDVD)) {
+		if (this.listeDAdherants.contains(argAdherant) && this.listeDOeuvres.contains(argDVD)) {
 			if (argAdherant.getOeuvresEmpruntes().contains(argDVD)) {
 				argDVD.setReserve(false);
 				argDVD.setAdherant(null);
@@ -230,7 +231,7 @@ public class Mediatheque {
 	
 	public ArrayList<Livre> listeLivresDisponibles() {
 		ArrayList<Livre> livres = new ArrayList<Livre>();
-		for (Oeuvre oeuvre : listeDOeuvres) {
+		for (Oeuvre oeuvre : this.listeDOeuvres) {
 			if (oeuvre instanceof Livre && !oeuvre.getReserve()) {
 				livres.add((Livre)oeuvre);
 			}
@@ -240,7 +241,7 @@ public class Mediatheque {
 	
 	public ArrayList<DVD> listeDVDsDisponibles() {
 		ArrayList<DVD> dVDs = new ArrayList<DVD>();
-		for (Oeuvre oeuvre : listeDOeuvres) {
+		for (Oeuvre oeuvre : this.listeDOeuvres) {
 			if (oeuvre instanceof DVD && !oeuvre.getReserve()) {
 				dVDs.add((DVD)oeuvre);
 			}
@@ -250,7 +251,7 @@ public class Mediatheque {
 	
 	public ArrayList<Livre> listeLivresIndisponibles() {
 		ArrayList<Livre> livres = new ArrayList<Livre>();
-		for (Oeuvre oeuvre : listeDOeuvres) {
+		for (Oeuvre oeuvre : this.listeDOeuvres) {
 			if (oeuvre instanceof Livre && oeuvre.getReserve()) {
 				livres.add((Livre)oeuvre);
 			}
@@ -260,7 +261,7 @@ public class Mediatheque {
 	
 	public ArrayList<DVD> listeDVDsIndisponibles() {
 		ArrayList<DVD> dVDs = new ArrayList<DVD>();
-		for (Oeuvre oeuvre : listeDOeuvres) {
+		for (Oeuvre oeuvre : this.listeDOeuvres) {
 			if (oeuvre instanceof DVD && oeuvre.getReserve()) {
 				dVDs.add((DVD)oeuvre);
 			}
@@ -268,93 +269,283 @@ public class Mediatheque {
 		return dVDs;
 	}
 
-//	public ArrayList<Livre> listeLivresTriesParTitre() {
-//	
-//	}
-//	
-//	public ArrayList<Livre> listeLivresTriesParAuteur() {
+	public ArrayList<Livre> listeLivresTriesParTitre() {
+		ArrayList<Livre> listeLivres = new ArrayList<Livre>();
+		for (Oeuvre oeuvre : this.listeDOeuvres) {
+			if (oeuvre instanceof Livre) {
+				listeLivres.add((Livre)oeuvre);
+			}
+		}
+		Collections.sort(listeLivres, new ComparateurLivreParTitre());
+		return listeLivres;
+	}
+	
+	public ArrayList<Livre> listeLivresTriesParAuteur() {
+		ArrayList<Livre> listeLivres = new ArrayList<Livre>();
+		for (Oeuvre oeuvre : this.listeDOeuvres) {
+			if (oeuvre instanceof Livre) {
+				listeLivres.add((Livre)oeuvre);
+			}
+		}
+		Collections.sort(listeLivres, new ComparateurLivreParAuteur());
+		return listeLivres;
+	}
+	
+	public ArrayList<Livre> listeLivresTriesParCategories() {
+		ArrayList<Livre> listeLivres = new ArrayList<Livre>();
+		for (Oeuvre oeuvre : this.listeDOeuvres) {
+			if (oeuvre instanceof Livre) {
+				listeLivres.add((Livre)oeuvre);
+			}
+		}
+		Collections.sort(listeLivres, new ComparateurLivreParCategories());
+		return listeLivres;
+	}
+	
+	public ArrayList<DVD> listeDVDsTriesParTitre() {
+		ArrayList<DVD> listeDVDs = new ArrayList<DVD>();
+		for (Oeuvre oeuvre : this.listeDOeuvres) {
+			if (oeuvre instanceof DVD) {
+				listeDVDs.add((DVD)oeuvre);
+			}
+		}
+		Collections.sort(listeDVDs, new ComparateurDVDParTitre());
+		return listeDVDs;
+	}
+	
+	public ArrayList<DVD> listeDVDsTriesParAuteur() {
+		ArrayList<DVD> listeDVDs = new ArrayList<DVD>();
+		for (Oeuvre oeuvre : this.listeDOeuvres) {
+			if (oeuvre instanceof DVD) {
+				listeDVDs.add((DVD)oeuvre);
+			}
+		}
+		Collections.sort(listeDVDs, new ComparateurDVDParAuteur());
+		return listeDVDs;
+	}
+	
+	public ArrayList<DVD> listeDVDsTriesParCategories() {
+		ArrayList<DVD> listeDVDs = new ArrayList<DVD>();
+		for (Oeuvre oeuvre : this.listeDOeuvres) {
+			if (oeuvre instanceof DVD) {
+				listeDVDs.add((DVD)oeuvre);
+			}
+		}
+		Collections.sort(listeDVDs, new ComparateurDVDParCategories());
+		return listeDVDs;
+	}
+	
+	public ArrayList<Livre> RechercheLivreParTitre(String argTitre) {
+		ArrayList<Livre> listeLivres = new ArrayList<Livre>();
+		for (Oeuvre oeuvre : this.listeDOeuvres) {
+			if (oeuvre instanceof Livre && oeuvre.getTitre().equalsIgnoreCase(argTitre)) {
+				listeLivres.add((Livre)oeuvre);
+			}
+		}
+		return listeLivres;
+    }
+
+    public ArrayList<Livre> RechercheLivreParAuteur(String argAuteur) {
+		ArrayList<Livre> listeLivres = new ArrayList<Livre>();
+		for (Oeuvre oeuvre : this.listeDOeuvres) {
+			if (oeuvre instanceof Livre && oeuvre.getAuteur().equalsIgnoreCase(argAuteur)) {
+				listeLivres.add((Livre)oeuvre);
+			}
+		}
+		return listeLivres;	
+    }
+
+    public ArrayList<Livre> RechercheLivreParCategories(ArrayList<Categorie> argCategories) {
+		ArrayList<Livre> listeLivres = new ArrayList<Livre>();
+		for (Oeuvre oeuvre : this.listeDOeuvres) {
+			if (oeuvre instanceof Livre) {
+				boolean flag = true;
+				for (Categorie categorie : argCategories) {
+					if (!oeuvre.getCategories().contains(categorie)) {
+						flag = false;
+					}
+				}
+				if (flag) {
+					listeLivres.add((Livre)oeuvre);
+				}
+			}
+		}
+		return listeLivres;	
+    }
+	
+	public ArrayList<DVD> RechercheDVDParTitre(String argTitre) {
+		ArrayList<DVD> listeDVDs = new ArrayList<DVD>();
+		for (Oeuvre oeuvre : this.listeDOeuvres) {
+			if (oeuvre instanceof DVD && oeuvre.getTitre().equalsIgnoreCase(argTitre)) {
+				listeDVDs.add((DVD)oeuvre);
+			}
+		}
+		return listeDVDs;		
+	}
+	
+	public ArrayList<DVD> RechercheDVDParAuteur(String argAuteur) {
+		ArrayList<DVD> listeDVDs = new ArrayList<DVD>();
+		for (Oeuvre oeuvre : this.listeDOeuvres) {
+			if (oeuvre instanceof DVD && oeuvre.getAuteur().equalsIgnoreCase(argAuteur)) {
+				listeDVDs.add((DVD)oeuvre);
+			}
+		}
+		return listeDVDs;			
+	}
+	
+	public ArrayList<DVD> RechercheDVDParCategories(ArrayList<Categorie> argCategories) {
+		ArrayList<DVD> listeDVDs = new ArrayList<DVD>();
+		for (Oeuvre oeuvre : this.listeDOeuvres) {
+			if (oeuvre instanceof DVD) {
+				boolean flag = true;
+				for (Categorie categorie : argCategories) {
+					if (!oeuvre.getCategories().contains(categorie)) {
+						flag = false;
+					}
+				}
+				if (flag) {
+					listeDVDs.add((DVD)oeuvre);
+				}
+			}
+		}
+		return listeDVDs;			
+	}
+	
+	public static ArrayList<Livre> selectionLivresParDisponibilité(ArrayList<Livre> argListeLivres) {
+		ArrayList<Livre> listeLivres = new ArrayList<Livre>();
+		for (Livre livre : argListeLivres) {
+			if (!livre.getReserve()) {
+				listeLivres.add(livre);
+			}
+		}
+		return listeLivres;
+	}
+	
+	public static ArrayList<Livre> selectionLivresParIndisponibilité(ArrayList<Livre> argListeLivres) {
+		ArrayList<Livre> listeLivres = new ArrayList<Livre>();
+		for (Livre livre : argListeLivres) {
+			if (!livre.getReserve()) {
+				listeLivres.add(livre);
+			}
+		}
+		return listeLivres;
+	}
+	
+	public static ArrayList<Livre> selectionLivresParTitre(ArrayList<Livre> argListeLivres, String argTitre) {
+		ArrayList<Livre> listeLivres = new ArrayList<Livre>();
+		for (Livre livre : argListeLivres) {
+			if (livre.getTitre().equalsIgnoreCase(argTitre)) {
+				listeLivres.add(livre);
+			}
+		}
+		return listeLivres;
+	}
+	
+	public static ArrayList<Livre> selectionLivresParAuteur(ArrayList<Livre> argListeLivres, String argAuteur) {
+		ArrayList<Livre> listeLivres = new ArrayList<Livre>();
+		for (Livre livre : argListeLivres) {
+			if (livre.getAuteur().equalsIgnoreCase(argAuteur)) {
+				listeLivres.add(livre);
+			}
+		}
+		return listeLivres;
+	}
+	
+	public static ArrayList<Livre> selectionLivresParCategories(ArrayList<Livre> argListeLivres, ArrayList<Categorie> argCategories) {
+		ArrayList<Livre> listeLivres = new ArrayList<Livre>();
+		for (Livre livre : argListeLivres) {
+			boolean flag = true;
+			for (Categorie categorie : argCategories) {
+				if (!livre.getCategories().contains(categorie)) {
+					flag = false;
+				}
+			}
+			if (flag) {
+				listeLivres.add(livre);
+			}
+		}
+		return listeLivres;
+	}
+	
+	public static ArrayList<DVD> selectionDVDsParDisponibilité(ArrayList<DVD> argListeDVDs) {
+		ArrayList<DVD> listeDVDs = new ArrayList<DVD>();
+		for (DVD dVD : argListeDVDs) {
+			if (!dVD.getReserve()) {
+				listeDVDs.add(dVD);
+			}
+		}
+		return listeDVDs;
+	}
+	
+	public static ArrayList<DVD> selectionDVDsParIndisponibilité(ArrayList<DVD> argListeDVDs) {
+		ArrayList<DVD> listeDVDs = new ArrayList<DVD>();
+		for (DVD dVD : argListeDVDs) {
+			if (!dVD.getReserve()) {
+				listeDVDs.add(dVD);
+			}
+		}
+		return listeDVDs;
+	}
+	
+	public static ArrayList<DVD> selectionDVDsParTitre(ArrayList<DVD> argListeDVDs, String argTitre) {
+		ArrayList<DVD> listeDVDs = new ArrayList<DVD>();
+		for (DVD dVD : argListeDVDs) {
+			if (dVD.getTitre().equalsIgnoreCase(argTitre)) {
+				listeDVDs.add(dVD);
+			}
+		}
+		return listeDVDs;
+	}
+	
+	public static ArrayList<DVD> selectionDVDsParAuteur(ArrayList<DVD> argListeDVDs, String argAuteur) {
+		ArrayList<DVD> listeDVDs = new ArrayList<DVD>();
+		for (DVD dVD : argListeDVDs) {
+			if (dVD.getAuteur().equalsIgnoreCase(argAuteur)) {
+				listeDVDs.add(dVD);
+			}
+		}
+		return listeDVDs;
+	}
+	
+	public static ArrayList<DVD> selectionDVDsParCategories(ArrayList<DVD> argListeDVDs, ArrayList<Categorie> argCategories) {
+		ArrayList<DVD> listeDVDs = new ArrayList<DVD>();
+		for (DVD dVD : argListeDVDs) {
+			boolean flag = true;
+			for (Categorie categorie : argCategories) {
+				if (!dVD.getCategories().contains(categorie)) {
+					flag = false;
+				}
+			}
+			if (flag) {
+				listeDVDs.add(dVD);
+			}
+		}
+		return listeDVDs;
+	}
+	
+//	public static ArrayList<Livre> triLivresParTitre(ArrayList<Livre> argListeLivres) {
 //		
 //	}
 //	
-//	public ArrayList<Livre> listeLivresTriesParCategories() {
+//	public static ArrayList<Livre> triLivresParAuteur(ArrayList<Livre> argListeLivres) {
 //		
 //	}
 //	
-//	public ArrayList<Livre> RechercheLivreParTitre() {
+//	public static ArrayList<Livre> triLivresParCategories(ArrayList<Livre> argListeLivres) {
+//		
+//	}	
+//	
+//	public static ArrayList<Livre> triDVDsParTitre(ArrayList<Livre> argListeLivres) {
 //		
 //	}
 //	
-//	public ArrayList<Livre> RechercheLivreParAuteur() {
+//	public static ArrayList<Livre> triDVDsParAuteur(ArrayList<Livre> argListeLivres) {
 //		
 //	}
 //	
-//	public ArrayList<Livre> RechercheLivreParCategories() {
+//	public static ArrayList<Livre> triDVDsParCategories(ArrayList<Livre> argListeLivres) {
 //		
-//	}
-//	
-//	public ArrayList<DVD> listeDVDsTriesParTitre() {
-//		
-//	}
-//	
-//	public ArrayList<DVD> listeDVDsTriesParAuteur() {
-//		
-//	}
-//	
-//	public ArrayList<DVD> listeDVDsTriesParCategories() {
-//		
-//	}
-//	
-//	public ArrayList<DVD> RechercheDVDParTitre() {
-//		
-//	}
-//	
-//	public ArrayList<DVD> RechercheDVDParAuteur() {
-//		
-//	}
-//	
-//	public ArrayList<DVD> RechercheDVDParCategories() {
-//		
-//	}
-//	
-//	public static ArrayList<Livre> triLivreParDisponibilité(ArrayList<Livre> listeLivre) {
-//		
-//	}
-//	
-//	public static ArrayList<Livre> triLivreParIndisponibilité(ArrayList<Livre> listeLivre) {
-//		
-//	}
-//	
-//	public static ArrayList<Livre> triLivreParTitre(ArrayList<Livre> listeLivre, String argTitre) {
-//		
-//	}
-//	
-//	public static ArrayList<Livre> triLivreParAuteur(ArrayList<Livre> listeLivre, String argAuteur) {
-//		
-//	}
-//	
-//	public static ArrayList<Livre> triLivreParCategories(ArrayList<Livre> listeLivre, ArrayList<Categorie> argCategories) {
-//		
-//	}
-//	
-//	public static ArrayList<DVD> triDVDParDisponibilité(ArrayList<DVD> listeDVD) {
-//		
-//	}
-//	
-//	public static ArrayList<DVD> triDVDParIndisponibilité(ArrayList<DVD> listeDVD) {
-//		
-//	}
-//	
-//	public static ArrayList<DVD> triDVDParTitre(ArrayList<DVD> listeDVD, String argTitre) {
-//		
-//	}
-//	
-//	public static ArrayList<DVD> triDVDParAuteur(ArrayList<DVD> listeDVD, String argAuteur) {
-//		
-//	}
-//	
-//	public static ArrayList<DVD> triDVDParCategories(ArrayList<DVD> listeDVD, ArrayList<Categorie> argCategories) {
-//		
-//	}
+//	}	
 	
 	public String toString() {
 		return "Mediatheque [adresse=" + this.adresse + ", nom=" + this.nom + ", directeur=" + this.directeur + ", listeDOeuvres="

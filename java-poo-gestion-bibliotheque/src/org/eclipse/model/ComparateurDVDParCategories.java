@@ -23,14 +23,14 @@ public class ComparateurDVDParCategories implements Comparator<DVD> {
 		if (taille1 == taille2) {
 			int comparaison = 0;
 			for (int i = 0 ; i < taille1 ; i++) {
-			comparaison += categories1.get(i).getCategorie().compareToIgnoreCase(categories2.get(i).getCategorie()) * Puissance(65536, taille1 - i - 1);
+			comparaison += categories1.get(i).getCategorie().compareToIgnoreCase(categories2.get(i).getCategorie()) * Puissance(256, taille1 - i - 1);
 			}
 			return comparaison;
 		}
 		if (taille1 < taille2) {
 			int comparaison = 0;
 			for (int i = 0 ; i < taille1 ; i++) {
-			comparaison += categories1.get(i).getCategorie().compareToIgnoreCase(categories2.get(i).getCategorie()) * Puissance(65536, taille1 - i);
+			comparaison += categories1.get(i).getCategorie().compareToIgnoreCase(categories2.get(i).getCategorie()) * Puissance(256, taille1 - i);
 			}
 			comparaison += "".compareToIgnoreCase(categories2.get(taille2 - 1).getCategorie());
 			return comparaison;
@@ -38,7 +38,7 @@ public class ComparateurDVDParCategories implements Comparator<DVD> {
 		if (taille1 > taille2) {
 			int comparaison = 0;
 			for (int i = 0 ; i < taille1 ; i++) {
-			comparaison += categories1.get(i).getCategorie().compareToIgnoreCase(categories2.get(i).getCategorie()) * Puissance(65536, taille1 - i);
+			comparaison += categories1.get(i).getCategorie().compareToIgnoreCase(categories2.get(i).getCategorie()) * Puissance(256, taille1 - i);
 			}
 			comparaison += categories1.get(taille1 - 1).getCategorie().compareToIgnoreCase("");
 			return comparaison;
